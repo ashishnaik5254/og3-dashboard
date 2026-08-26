@@ -118,7 +118,7 @@ tr:hover td{background:#FAFBFC}
       '<div style="font-size:20px;font-weight:700;color:#003A5D;margin-bottom:6px">OG3 Quality Education</div>' +
       '<div style="font-size:13px;color:#6B7A8D;margin-bottom:24px">UNSDCF Outcome Group 3 — Coordination Dashboard</div>' +
       '<div style="font-size:12px;color:#6B7A8D;margin-bottom:8px;text-align:left;font-weight:600">Enter access password</div>' +
-      '<input id="pwd-input" type="password" placeholder="Password" style="width:100%;padding:12px 14px;border:1px solid #DDE6EE;border-radius:8px;font-size:14px;margin-bottom:12px;outline:none;box-sizing:border-box" onkeydown="if(event.key==='Enter') checkPwd()">' +
+      '<input id="pwd-input" type="password" placeholder="Password" style="width:100%;padding:12px 14px;border:1px solid #DDE6EE;border-radius:8px;font-size:14px;margin-bottom:12px;outline:none;box-sizing:border-box" onkeydown="if(event.key===\'Enter\') checkPwd()">' +
       '<div id="pwd-error" style="color:#C0392B;font-size:12px;margin-bottom:10px;display:none">Incorrect password. Please try again.</div>' +
       '<button onclick="checkPwd()" style="width:100%;padding:12px;background:#1CABE2;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer">Access Dashboard</button>' +
       '<div style="font-size:11px;color:#9EA8B3;margin-top:16px">For access contact: anaik@unicef.org</div>' +
@@ -163,23 +163,20 @@ document.getElementById('tabs').addEventListener('click', function(e) {
 
 async function fetchTable(t) {
   try {
+    var controller = new AbortController();
+    var timer = setTimeout(function(){ controller.abort(); }, 6000);
     var r = await fetch(URL + '/rest/v1/' + t + '?select=*&order=id', {
+      signal: controller.signal,
       headers: {
         'apikey': KEY,
         'Authorization': 'Bearer ' + KEY,
-        'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
     });
-    if (!r.ok) {
-      console.error('Error fetching ' + t + ': ' + r.status);
-      return [];
-    }
+    clearTimeout(timer);
+    if (!r.ok) return [];
     return await r.json();
-  } catch(e) {
-    console.error('Fetch failed for ' + t + ': ' + e.message);
-    return [];
-  }
+  } catch(e) { return []; }
 }
 
 async function loadAll() {
