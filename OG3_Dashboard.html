@@ -101,6 +101,7 @@ tr:hover td{background:#FAFBFC}
   <div class="tab" data-tab="osc">OSC</div>
   <div class="tab" data-tab="jsc">JSC</div>
   <div class="tab" data-tab="documents">Documents</div>
+  <div class="tab" data-tab="unsdcf">UNSDCF 2028-32</div>
 </div>
 
 <div class="content" id="content">
@@ -228,7 +229,7 @@ function progBar(p, s) {
 }
 
 function render() {
-  var fns = {overview:overview, about:about, meetings:meetings, reporting:reporting, jwp:jwp, osc:osc, jsc:jsc, documents:documents};
+  var fns = {overview:overview, about:about, meetings:meetings, reporting:reporting, jwp:jwp, osc:osc, jsc:jsc, documents:documents, unsdcf:unsdcf};
   document.getElementById('content').innerHTML = fns[TAB]();
 }
 
@@ -328,6 +329,21 @@ function overview() {
   html += '</div></div>';
 
   html += '</div>';
+
+  // UNSDCF 2028-32 Status card
+  html += '<div class="card" style="margin-top:14px">';
+  html += '<div class="sec-title" style="display:flex;align-items:center;gap:8px"><span style="font-size:15px">🗓️</span> UNSDCF 2028-32 Planning</div>';
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:12px">';
+  html += '<div style="background:#E6F7EE;border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px">✅</div><div style="font-size:11px;font-weight:600;color:#00833D;margin-top:4px">JSC Endorsed</div><div style="font-size:10px;color:#6B7A8D">28 October 2025</div></div>';
+  html += '<div style="background:#FEF5E3;border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px">📋</div><div style="font-size:11px;font-weight:600;color:#B8760A;margin-top:4px">CF Evaluation</div><div style="font-size:10px;color:#6B7A8D">March–Oct 2026</div></div>';
+  html += '<div style="background:#E3F5FC;border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px">🔍</div><div style="font-size:11px;font-weight:600;color:#0077B5;margin-top:4px">Country Analysis</div><div style="font-size:10px;color:#6B7A8D">March–Oct 2026</div></div>';
+  html += '<div style="background:#FDE8E7;border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px">🏕️</div><div style="font-size:11px;font-weight:600;color:#C0392B;margin-top:4px">UNCT Retreat</div><div style="font-size:10px;color:#6B7A8D">3-4 Sept 2026</div></div>';
+  html += '<div style="background:#F0EBF7;border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px">🎯</div><div style="font-size:11px;font-weight:600;color:#6C3B8C;margin-top:4px">CF Design</div><div style="font-size:10px;color:#6B7A8D">Nov 2026–Apr 2027</div></div>';
+  html += '<div style="background:#E6F7EE;border-radius:8px;padding:12px;text-align:center"><div style="font-size:18px">✍️</div><div style="font-size:11px;font-weight:600;color:#00833D;margin-top:4px">CF Signing</div><div style="font-size:10px;color:#6B7A8D">May 2027</div></div>';
+  html += '</div>';
+  html += '<div style="font-size:12px;color:#6B7A8D">16-month design process (March 2026 – May 2027). See UNSDCF 2028-32 tab for full details. <span style="color:#1CABE2;cursor:pointer" onclick="document.querySelector('[data-tab=unsdcf]').click()">View planning details →</span></div>';
+  html += '</div>';
+
   return html;
 }
 
@@ -534,6 +550,111 @@ function documents() {
     html += d.link ? '<a href="' + d.link + '" target="_blank" class="open-btn" style="background:#1CABE2">Open document ↗</a>' : '<span style="font-size:11px;color:#B0BEC5">No link added yet</span>';
     html += '</div>';
   });
+  return html;
+}
+
+function unsdcf() {
+  var html = '<div class="sec-title">UNSDCF 2028-32 — Planning and Development</div>';
+
+  // Status banner
+  html += '<div class="card" style="background:linear-gradient(135deg,#003A5D 0%,#1CABE2 100%);color:#fff;margin-bottom:14px">';
+  html += '<div style="font-size:16px;font-weight:700;margin-bottom:6px">Government of India and United Nations Sustainable Development Cooperation Framework 2028-2032</div>';
+  html += '<div style="font-size:12px;opacity:.85;margin-bottom:10px">Roadmap endorsed by the Joint Steering Committee on 28 October 2025. 16-month design process: March 2026 – May 2027.</div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap">';
+  html += '<span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600">📋 Roadmap v9 — Updated June 2026</span>';
+  html += '<span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600">🏕️ UNCT Retreat: 3-4 Sept 2026</span>';
+  html += '<span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600">✍️ CF Signing: May 2027</span>';
+  html += '</div></div>';
+
+  // Planning Timeline
+  html += '<div class="grid2">';
+  html += '<div class="card"><div class="sec-title">📅 Planning Timeline</div>';
+  var phases = [
+    {phase:'Roadmap Endorsed by JSC', date:'28 Oct 2025', status:'Completed', color:'#00833D'},
+    {phase:'Phase 1: CF Evaluation', date:'Mar – Oct 2026', status:'In Progress', color:'#E6A817'},
+    {phase:'Phase 2: Country Analysis', date:'Mar – Oct 2026', status:'In Progress', color:'#E6A817'},
+    {phase:'UNCT Retreat', date:'3-4 Sept 2026', status:'Upcoming', color:'#C0392B'},
+    {phase:'Phase 3: CF Design and Strategic Prioritization', date:'Nov 2026 – Apr 2027', status:'Upcoming', color:'#6B7A8D'},
+    {phase:'Strategic Prioritization Retreat', date:'End 2026', status:'Upcoming', color:'#6B7A8D'},
+    {phase:'Phase 4: UNCT Configuration', date:'Mar 2027', status:'Upcoming', color:'#6B7A8D'},
+    {phase:'Phase 5: Funding Framework', date:'Jun – Jul 2027', status:'Upcoming', color:'#6B7A8D'},
+    {phase:'CF Document Signing', date:'May 2027', status:'Upcoming', color:'#6B7A8D'},
+  ];
+  phases.forEach(function(p) {
+    var bg = p.status === 'Completed' ? '#E6F7EE' : p.status === 'In Progress' ? '#FEF5E3' : '#F0F5FA';
+    html += '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:' + bg + ';border-radius:8px;margin-bottom:6px">';
+    html += '<div style="width:3px;height:32px;background:' + p.color + ';border-radius:2px;flex-shrink:0"></div>';
+    html += '<div style="flex:1"><div style="font-size:12px;font-weight:500">' + p.phase + '</div>';
+    html += '<div style="font-size:11px;color:#6B7A8D">' + p.date + '</div></div>';
+    html += '<span class="badge ' + (p.status==='Completed'?'b-green':p.status==='In Progress'?'b-amber':'b-grey') + '">' + p.status + '</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // UNCT Retreat box
+  html += '<div>';
+  html += '<div class="card" style="border:2px solid #C0392B;margin-bottom:14px">';
+  html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="font-size:20px">🏕️</span><div style="font-size:14px;font-weight:700;color:#C0392B">UNCT Retreat — 3-4 September 2026</div></div>';
+  html += '<div style="font-size:13px;color:#1A2533;margin-bottom:8px">Key strategic event for UNSDCF 2028-32 planning. The retreat brings together the full UN Country Team to discuss the Country Analysis, strategic priorities and outcome areas for the new framework.</div>';
+  html += '<div style="background:#FDE8E7;border-radius:8px;padding:10px;margin-bottom:10px">';
+  html += '<div style="font-size:11px;font-weight:600;color:#C0392B;margin-bottom:6px">Expected Outputs from Retreat</div>';
+  html += '<div style="font-size:12px;color:#1A2533;line-height:1.7">• UNCT agreed priorities and strategic direction for 2028-32<br>• Initial outcome areas and OG structure for new framework<br>• Key messages for government engagement<br>• Agreement on CA and CF design process next steps</div>';
+  html += '</div>';
+  html += '<div id="retreat-docs" style="font-size:12px;color:#9EA8B3;font-style:italic">Retreat documents will appear here once added in Supabase documents table.</div>';
+  html += '</div>';
+
+  // Key Design Principles
+  html += '<div class="card">';
+  html += '<div class="sec-title">Key Design Principles</div>';
+  var principles = [
+    {icon:'🔬', title:'Systems Thinking', desc:'Causal loops and systems mapping to visualize drivers and relationships'},
+    {icon:'🔮', title:'Strategic Foresight', desc:'Scenario planning including Futures Triangle method'},
+    {icon:'🤝', title:'Leave No One Behind', desc:'Intersectional lens for women, youth, persons with disabilities, SCs, STs'},
+    {icon:'📊', title:'National Alignment', desc:'Indicators aligned with National Indicator Framework (NIF)'},
+    {icon:'💰', title:'Innovative Financing', desc:'Beyond ODA — domestic resources, private capital, SDG Country Fund windows'},
+  ];
+  principles.forEach(function(p) {
+    html += '<div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #EDF0F3">';
+    html += '<span style="font-size:18px">' + p.icon + '</span>';
+    html += '<div><div style="font-size:12px;font-weight:600">' + p.title + '</div><div style="font-size:11px;color:#6B7A8D">' + p.desc + '</div></div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  html += '</div>';
+  html += '</div>';
+
+  // Governance Structure
+  html += '<div class="card" style="margin-top:14px"><div class="sec-title">Governance Structure for 2028-32</div>';
+  html += '<div class="grid3">';
+  var gov = [
+    {title:'Joint Steering Committee (JSC)', color:'#003A5D', desc:'Apex governing body co-chaired by NITI Aayog Vice-Chairman and UN Resident Coordinator. Meets annually to review Results Framework and JWPs.'},
+    {title:'Outcome Standing Committees (OSC)', color:'#006D77', desc:'One OSC per Outcome Group, chaired by the Secretary of the corresponding nodal central ministry. Ensures alignment with national development priorities.'},
+    {title:'Outcome Groups', color:'#1CABE2', desc:'Repositioned as think tanks in addition to coordination functions. Each OG chaired by a UN Head of Agency. Reporting exclusively through UNINFO.'},
+  ];
+  gov.forEach(function(g) {
+    html += '<div style="border-left:4px solid ' + g.color + ';padding:10px 14px;background:#FAFBFC;border-radius:0 8px 8px 0">';
+    html += '<div style="font-size:13px;font-weight:600;color:' + g.color + ';margin-bottom:6px">' + g.title + '</div>';
+    html += '<div style="font-size:12px;color:#1A2533;line-height:1.6">' + g.desc + '</div></div>';
+  });
+  html += '</div></div>';
+
+  // Key Risks
+  html += '<div class="card" style="margin-top:14px"><div class="sec-title">Key Risks and Assumptions</div>';
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px">';
+  var risks = [
+    {risk:'Government engagement fatigue', mitigation:'Coordinate CA with agency CPD terminal evaluations to minimize consultations'},
+    {risk:'Data gaps for Country Analysis', mitigation:'Timed to draw on 16th Finance Commission data (April 2026) and NFHS results (Q2 2026)'},
+    {risk:'Agency capacity constraints', mitigation:'16-month timeline (vs recommended 9-12 months) to allow adequate preparation'},
+    {risk:'Funding shortfall for design process', mitigation:'DCO allocation of $50,000 with UNCT cost-sharing if insufficient'},
+  ];
+  risks.forEach(function(r) {
+    html += '<div style="background:#FEF5E3;border-radius:8px;padding:12px">';
+    html += '<div style="font-size:11px;font-weight:600;color:#B8760A;margin-bottom:4px">⚠️ ' + r.risk + '</div>';
+    html += '<div style="font-size:11px;color:#1A2533;line-height:1.5">✓ ' + r.mitigation + '</div>';
+    html += '</div>';
+  });
+  html += '</div></div>';
+
   return html;
 }
 
