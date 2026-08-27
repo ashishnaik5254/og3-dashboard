@@ -147,10 +147,10 @@ var TODAY = new Date();
 // Static fallback data - shows immediately while Supabase loads
 var STATIC = {
   agencies: [
-    {id:1, name:'UNICEF', role:'Lead Convenor', focal_point:'Saadhna Pandey', sector:'Education, Child Protection, Nutrition'},
-    {id:2, name:'UNESCO', role:'Co-Lead', focal_point:'Joyce Poan', sector:'Education, Culture, Science'},
-    {id:3, name:'UNFPA', role:'Member', focal_point:'Radhika', sector:'Reproductive Health, Gender'},
-    {id:4, name:'UNHCR', role:'Member', focal_point:'TBD', sector:'Refugee Education, Protection'}
+    {id:1, name:'UNICEF', role:'Lead Convenor', focal_point:'Saadhna Pandey', email:'spandey@unicef.org', sector:'Education, Child Protection, Nutrition'},
+    {id:2, name:'UNESCO', role:'Co-Lead', focal_point:'Joyce Poan', email:'j.poan@unesco.org', sector:'Education, Culture, Science'},
+    {id:3, name:'UNFPA', role:'Member', focal_point:'Manish Kumar', email:'manish@unfpa.org', sector:'Reproductive Health, Gender'},
+    {id:4, name:'UNHCR', role:'Member', focal_point:'Ragini Zutshi', email:'zutshi@unhcr.org', sector:'Refugee Education, Protection'}
   ],
   meetings: [
     {id:1, type:'OG3 Monthly Meeting', date:'2026-08-26', time:'11:00', venue:'Teams Online', chair:'Poan Joyce, UNESCO', agenda:'Zero Draft Country Analysis', status:'Upcoming', agenda_link:'', mom_link:''},
@@ -405,8 +405,12 @@ function about() {
   html += '<div style="background:#FEF5E3;border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:600;color:#B8760A;margin-bottom:6px">IF — Certification Systems</div><div style="font-size:12px;line-height:1.6">Government has capacity for building and awarding qualifications, then marginalized children will have access to quality tertiary education.</div></div>';
   html += '</div>';
   html += '<div style="display:flex;gap:10px;flex-wrap:wrap">';
-  [{sdg:'SDG 4',label:'Quality Education',icon:'🎯'},{sdg:'SDG 5',label:'Gender Equality',icon:'⚤'},{sdg:'SDG 8',label:'Decent Work',icon:'🤝'},{sdg:'SDG 10',label:'Reduced Inequalities',icon:'📊'}].forEach(function(s) {
-    html += '<div style="text-align:center;padding:10px 16px;background:#F0F5FA;border-radius:8px"><div style="font-size:18px">' + s.icon + '</div><div style="font-size:11px;font-weight:600;color:#003A5D">' + s.sdg + '</div><div style="font-size:10px;color:var(--muted)">' + s.label + '</div></div>';
+  var sdgs = [{sdg:'SDG 4',label:'Quality Education',icon:'🎯',link:'https://sdgs.un.org/goals/goal4'},{sdg:'SDG 5',label:'Gender Equality',icon:'⚤',link:'https://sdgs.un.org/goals/goal5'},{sdg:'SDG 8',label:'Decent Work',icon:'🤝',link:'https://sdgs.un.org/goals/goal8'},{sdg:'SDG 10',label:'Reduced Inequalities',icon:'📊',link:'https://sdgs.un.org/goals/goal10'}];
+  sdgs.forEach(function(s) {
+    html += '<a href="' + s.link + '" target="_blank" style="text-decoration:none;text-align:center;display:block;padding:10px 16px;background:#F0F5FA;border-radius:8px;min-width:90px">';
+    html += '<div style="font-size:18px">' + s.icon + '</div>';
+    html += '<div style="font-size:11px;font-weight:600;color:#003A5D">' + s.sdg + '</div>';
+    html += '<div style="font-size:10px;color:#1CABE2">' + s.label + ' ↗</div></a>';
   });
   html += '</div></div>';
 
@@ -420,16 +424,26 @@ function about() {
     html += '<div style="font-size:15px;font-weight:700">' + (a.name||'') + '</div>';
     html += '<div style="margin-top:5px">' + badge(a.role) + '</div>';
     html += '<div style="font-size:11px;color:var(--muted);margin-top:6px">📋 ' + (a.sector||'—') + '</div>';
-    html += '<div style="font-size:12px;margin-top:4px">👤 ' + (a.focal_point||'TBD') + '</div>';
+    html += '<div style="font-size:12px;margin-top:4px">👤 ' + (a.focal_point||'TBD') + (a.email ? ' — <a href="mailto:' + a.email + '" style="color:#1CABE2;font-size:11px">' + a.email + '</a>' : '') + '</div>';
     html += '</div>';
   });
   html += '</div>';
   return html;
 }
 
+var calYear = TODAY.getFullYear();
+var calMonth = TODAY.getMonth();
+
+function changeMonth(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  render();
+}
+
 function meetings() {
   var mtgs = DATA.meetings || [];
-  var year = TODAY.getFullYear(), month = TODAY.getMonth();
+  var year = calYear, month = calMonth;
   var firstDay = new Date(year, month, 1).getDay();
   var daysInMonth = new Date(year, month+1, 0).getDate();
   var monthName = TODAY.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
@@ -451,7 +465,9 @@ function meetings() {
 
   var calHtml = '<div class="card" style="min-width:280px;max-width:340px">';
   calHtml += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">';
+  calHtml += '<button onclick="changeMonth(-1)" style="background:#F0F5FA;border:1px solid #DDE6EE;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px;color:#003A5D;font-weight:600">‹</button>';
   calHtml += '<div style="font-weight:600;font-size:14px">' + monthName + '</div>';
+  calHtml += '<button onclick="changeMonth(1)" style="background:#F0F5FA;border:1px solid #DDE6EE;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:14px;color:#003A5D;font-weight:600">›</button>';
   calHtml += '<div style="display:flex;gap:8px;font-size:10px;color:var(--muted)">';
   calHtml += '<span><span style="color:#1CABE2">●</span> Meeting</span><span><span style="color:#006D77">●</span> OSC</span><span><span style="color:#6C3B8C">●</span> JSC</span><span><span style="color:#E6A817">●</span> Deadline</span>';
   calHtml += '</div></div>';
