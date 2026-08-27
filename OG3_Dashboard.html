@@ -446,7 +446,7 @@ function meetings() {
   var year = calYear, month = calMonth;
   var firstDay = new Date(year, month, 1).getDay();
   var daysInMonth = new Date(year, month+1, 0).getDate();
-  var monthName = TODAY.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+  var monthName = new Date(year, month, 1).toLocaleDateString('en-GB',{month:'long',year:'numeric'});
 
   var evMap = {};
   var allEvts = [];
