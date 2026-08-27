@@ -582,17 +582,21 @@ function documents() {
   var rows = DATA.documents || [];
   var html = '<div class="sec-title">Documents and Resources</div>';
   if (rows.length === 0) return html + '<div class="card"><div class="empty">No documents yet. Add links in Supabase documents table.</div></div>';
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px">';
   rows.forEach(function(d) {
-    html += '<div class="doc-card">';
+    html += '<div class="doc-card" style="display:flex;flex-direction:column;justify-content:space-between">';
+    html += '<div>';
     html += '<div style="font-size:13px;font-weight:600;margin-bottom:6px">' + (d.name||'Untitled') + '</div>';
     html += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">' + badge(d.doc_type);
     if (d.doc_date) html += '<span class="badge b-grey">' + fmt(d.doc_date) + '</span>';
     html += '</div>';
     if (d.notes) html += '<div style="font-size:11px;color:var(--muted);font-style:italic;margin-bottom:6px">' + d.notes + '</div>';
     if (d.uploaded_by) html += '<div style="font-size:11px;color:var(--muted);margin-bottom:8px">Uploaded by: ' + d.uploaded_by + '</div>';
-    html += d.link ? '<a href="' + d.link + '" target="_blank" class="open-btn" style="background:#1CABE2">Open document ↗</a>' : '<span style="font-size:11px;color:#B0BEC5">No link added yet</span>';
+    html += '</div>';
+    html += '<div style="margin-top:8px">' + (d.link ? '<a href="' + d.link + '" target="_blank" class="open-btn" style="background:#1CABE2">Open document ↗</a>' : '<span style="font-size:11px;color:#B0BEC5">No link added yet</span>') + '</div>';
     html += '</div>';
   });
+  html += '</div>';
   return html;
 }
 
