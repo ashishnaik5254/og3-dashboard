@@ -143,6 +143,41 @@ tr:hover td{background:#FAFBFC}
 const URL = 'https://nuxnpnhcxxesiogzltpc.supabase.co';
 const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51eG5wbmhjeHhlc2lvZ3psdHBjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyOTA3MTEsImV4cCI6MjEwMjg2NjcxMX0.I3rNxG8r2xCUk_cm4SPLLTaYCUpTqnq5YFscq8RxtBY';
 var TODAY = new Date();
+
+// Static fallback data - shows immediately while Supabase loads
+var STATIC = {
+  agencies: [
+    {id:1, name:'UNICEF', role:'Lead Convenor', focal_point:'Saadhna Pandey', sector:'Education, Child Protection, Nutrition'},
+    {id:2, name:'UNESCO', role:'Co-Lead', focal_point:'Joyce Poan', sector:'Education, Culture, Science'},
+    {id:3, name:'UNFPA', role:'Member', focal_point:'Radhika', sector:'Reproductive Health, Gender'},
+    {id:4, name:'UNHCR', role:'Member', focal_point:'TBD', sector:'Refugee Education, Protection'}
+  ],
+  meetings: [
+    {id:1, type:'OG3 Monthly Meeting', date:'2026-08-26', time:'11:00', venue:'Teams Online', chair:'Poan Joyce, UNESCO', agenda:'Zero Draft Country Analysis', status:'Upcoming', agenda_link:'', mom_link:''},
+    {id:2, type:'OG3 Monthly Meeting', date:'2026-09-22', time:'11:00', venue:'Teams Online', chair:'TBD', agenda:'TBD', status:'TBD', agenda_link:'', mom_link:''},
+  ],
+  reporting: [
+    {id:1, report_type:'Annual Reporting', item:'UNSDCF Annual Results Report 2026', deadline:'2026-09-30', lead:'Ashish Naik', status:'Not Started', notes:'Data collection to begin September', doc_link:''},
+    {id:2, report_type:'UNINFO Reporting', item:'UNINFO Template 2026', deadline:'2026-07-24', lead:'Ashish Naik', status:'Submitted', notes:'Submitted to RCO', doc_link:''},
+    {id:3, report_type:'Concept Note', item:'OG3 Flagship Concept Note', deadline:'2026-08-06', lead:'Ashish and Begur', status:'Submitted', notes:'All RC comments addressed', doc_link:''},
+  ],
+  jwp: [
+    {id:1, output:'Output 1', description:'Quality secondary education delivery strengthened', lead_agency:'UNICEF', partner_agencies:'UNICEF, UNESCO, UNFPA', progress:65, status:'On Track'},
+    {id:2, output:'Output 2', description:'School-to-work transition pathways expanded', lead_agency:'UNESCO', partner_agencies:'UNESCO, UNICEF, ILO', progress:45, status:'On Track'},
+    {id:3, output:'Output 3', description:'OOSC identification and re-enrolment mechanisms', lead_agency:'UNICEF', partner_agencies:'UNICEF, UNFPA', progress:30, status:'At Risk'},
+  ],
+  documents: [
+    {id:1, name:'OG3 Flagship Concept Note (Revised)', doc_type:'Concept Note', doc_date:'2026-08-06', notes:'All RC comments addressed', link:'', uploaded_by:'Ashish Naik'},
+    {id:2, name:'UNSDCF Annual Results Report 2025', doc_type:'Annual Report', doc_date:'2025-09-30', notes:'Submitted to NITI Aayog', link:'', uploaded_by:'Ashish Naik'},
+    {id:3, name:'OG3 Meeting Agenda 26 August 2026', doc_type:'Agenda', doc_date:'2026-08-26', notes:'Chair: Joyce Poan UNESCO', link:'', uploaded_by:'Ashish Naik'},
+  ],
+  osc: [
+    {id:1, date:'2025-10-23', agenda:'Annual Progress Review, OG3 Flagship', status:'Completed', chair:'MoE Secretary', ministry:'Ministry of Education', action_points:'', mom_link:'', ppt_link:''},
+  ],
+  jsc: [
+    {id:1, date:null, agenda:'UNSDCF Annual Results 2026', status:'Upcoming', chair:'VC NITI Aayog', notes:'', mom_link:'', ppt_link:''},
+  ]
+};
 let DATA = {};
 let TAB = 'overview';
 
@@ -181,18 +216,26 @@ async function fetchTable(t) {
 }
 
 async function loadAll() {
-  document.getElementById('content').innerHTML = '<div class="loading"><div class="spinner"></div>Loading OG3 data...</div>';
+  // Show static data immediately
+  DATA = JSON.parse(JSON.stringify(STATIC));
+  render();
+  // Then try to load live data from Supabase in background
+  document.querySelector('.refresh-bar span').textContent = 'Loading live data from Supabase...';
   var tables = ['agencies','meetings','reporting','jwp','documents','osc','jsc'];
   var loaded = 0;
   for (var i = 0; i < tables.length; i++) {
-    DATA[tables[i]] = await fetchTable(tables[i]);
-    loaded += DATA[tables[i]].length;
+    var live = await fetchTable(tables[i]);
+    if (live && live.length > 0) {
+      DATA[tables[i]] = live;
+      loaded += live.length;
+    }
   }
-  if (loaded === 0) {
-    document.getElementById('content').innerHTML = '<div style="text-align:center;padding:60px 20px"><div style="font-size:40px;margin-bottom:12px">⚠️</div><div style="font-size:15px;font-weight:600;color:#003A5D;margin-bottom:8px">Dashboard data could not be loaded</div><div style="font-size:12px;color:#6B7A8D;margin-bottom:16px">Please check your internet connection and try again.</div><button onclick="loadAll()" style="background:#1CABE2;color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">Try Again</button></div>';
-    return;
+  if (loaded > 0) {
+    document.querySelector('.refresh-bar span').textContent = 'Live data from Supabase ✓';
+    render();
+  } else {
+    document.querySelector('.refresh-bar span').textContent = 'Showing cached data (Supabase unavailable)';
   }
-  render();
 }
 
 function fmt(d) {
