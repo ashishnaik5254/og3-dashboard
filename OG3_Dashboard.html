@@ -727,7 +727,7 @@ html += '</div>';
 
 loadAll();
 
-var GROQ_KEY = "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";
+var GEMINI_KEY = "AQ.Ab8RN6LJ2nuJcC2lFF84XM_pDGqRfCPfblm8G_4XTvBd0VQSSA";
 var AI_HISTORY = [{role:"assistant", content:"Welcome to OG3 Quality Education Coordination Assistant! I can help you with meeting minutes, agendas, talking points, document summaries and any coordination task. How can I help you today?"}];
 
 function aiAssistant() {
@@ -751,7 +751,7 @@ function aiAssistant() {
       </button>
     </div>
   </div>
-  <p style="font-size:11px;color:#9EA8B3;margin-top:8px;text-align:center;">Powered by Groq AI · Responses are AI-generated — please review before use</p>
+  <p style="font-size:11px;color:#9EA8B3;margin-top:8px;text-align:center;">Powered by Google Gemini AI · Responses are AI-generated — please review before use</p>
   `;
 }
 
@@ -814,23 +814,26 @@ async function sendGroq() {
 
   try {
     var messages = AI_HISTORY.filter(function(m){ return m.role !== 'system'; });
-    var res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    var systemPrompt = 'You are an expert UN coordination assistant for the OG3 Quality Education Outcome Group under UNSDCF 2023-27 in India. UNICEF India is Lead Convenor. Member agencies: UNESCO, UNFPA, UNHCR. Help with meeting minutes, agendas, talking points for senior UN leadership, document summaries, emails and coordination tasks. Use professional UN language. Be concise and structured.';
+    var geminiMessages = messages.map(function(m) {
+      return {role: m.role === 'assistant' ? 'model' : 'user', parts:[{text: m.content}]};
+    });
+    if (geminiMessages.length === 0 || geminiMessages[0].role !== 'user') {
+      geminiMessages.unshift({role:'user', parts:[{text:'Hello'}]});
+    }
+    var res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + GEMINI_KEY, {
       method: 'POST',
-      headers: {'Content-Type':'application/json', 'Authorization':'Bearer ' + GROQ_KEY},
+      headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
-        model: 'llama3-70b-8192',
-        messages: [
-          {role:'system', content:'You are an expert UN coordination assistant for the OG3 Quality Education Outcome Group under UNSDCF 2023-27 in India. UNICEF India is Lead Convenor. Member agencies: UNESCO, UNFPA, UNHCR. Help with meeting minutes, agendas, talking points for senior UN leadership, document summaries, emails and coordination tasks. Use professional UN language. Be concise and structured.'},
-          ...messages
-        ],
-        max_tokens: 1500,
-        temperature: 0.7
+        system_instruction: {parts:[{text: systemPrompt}]},
+        contents: geminiMessages,
+        generationConfig: {maxOutputTokens: 1500, temperature: 0.7}
       })
     });
     var data = await res.json();
     var reply;
-    if (data.choices && data.choices[0]) {
-      reply = data.choices[0].message.content;
+    if (data.candidates && data.candidates[0]) {
+      reply = data.candidates[0].content.parts[0].text;
     } else if (data.error) {
       reply = '⚠️ API Error: ' + data.error.message;
     } else {
