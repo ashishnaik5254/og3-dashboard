@@ -727,7 +727,7 @@ html += '</div>';
 
 loadAll();
 
-var GROQ_KEY = "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";
+var GROQ_KEY = "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";
 var AI_HISTORY = [{role:"assistant", content:"Welcome to OG3 Quality Education Coordination Assistant! I can help you with meeting minutes, agendas, talking points, document summaries and any coordination task. How can I help you today?"}];
 
 function aiAssistant() {
@@ -828,7 +828,14 @@ async function sendGroq() {
       })
     });
     var data = await res.json();
-    var reply = data.choices && data.choices[0] ? data.choices[0].message.content : 'Sorry, no response received.';
+    var reply;
+    if (data.choices && data.choices[0]) {
+      reply = data.choices[0].message.content;
+    } else if (data.error) {
+      reply = '⚠️ API Error: ' + data.error.message;
+    } else {
+      reply = '⚠️ No response. Raw: ' + JSON.stringify(data).substring(0,200);
+    }
     loader.remove();
     AI_HISTORY.push({role:'assistant', content:reply});
     renderHistory();
