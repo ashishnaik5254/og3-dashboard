@@ -818,7 +818,7 @@ async function sendGroq() {
       method: 'POST',
       headers: {'Content-Type':'application/json', 'Authorization':'Bearer ' + GROQ_KEY},
       body: JSON.stringify({
-        model: 'llama3-8b-8192',
+        model: 'llama3-70b-8192',
         messages: [
           {role:'system', content:'You are an expert UN coordination assistant for the OG3 Quality Education Outcome Group under UNSDCF 2023-27 in India. UNICEF India is Lead Convenor. Member agencies: UNESCO, UNFPA, UNHCR. Help with meeting minutes, agendas, talking points for senior UN leadership, document summaries, emails and coordination tasks. Use professional UN language. Be concise and structured.'},
           ...messages
