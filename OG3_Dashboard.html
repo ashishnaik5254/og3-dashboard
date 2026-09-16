@@ -728,121 +728,77 @@ html += '</div>';
 loadAll();
 
 function aiAssistant() {
+  var claudeContext = encodeURIComponent("You are an expert UN coordination assistant for the OG3 Quality Education Outcome Group under the UNSDCF 2023-27 framework in India. UNICEF India is the Lead Convenor (focal point: Saadhna Pandey). Member agencies: UNESCO (Joyce Poan), UNFPA (Manish Kumar), UNHCR (Ragini Zutshi). The group coordinates quality education programming across all agencies. You help with: meeting minutes (MOM), agendas, talking points for CR Cynthia McCaffrey or DRP Jesper Moller, document summaries, formal UN correspondence and any coordination task. Use professional UN language. Be concise, structured and practical. How can I help you today?");
+
+  var claudeURL = "https://claude.ai/new?q=" + claudeContext;
+
   return `
   <div class="sec-title">✨ OG3 AI Assistant</div>
-  <p style="color:#546E7A;font-size:13px;margin-bottom:16px;">Ask anything — generate meeting minutes, agendas, talking points, summaries, draft emails or any coordination task. Type your request below.</p>
+  <p style="color:#546E7A;font-size:13px;margin-bottom:20px;">Click the button below to open Claude AI with OG3 context pre-loaded. Type your request and get instant results — meeting minutes, agendas, talking points, document summaries and more.</p>
 
-  <div style="background:#fff;border-radius:12px;border:1px solid #CBD5E0;box-shadow:0 2px 12px rgba(0,0,0,.08);overflow:hidden;">
-
-    <!-- Chat history -->
-    <div id="ai-history" style="height:420px;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;background:#F8FBFD;">
-      <div style="background:#E8F4FA;border-radius:10px;padding:14px 16px;max-width:80%;align-self:flex-start;">
-        <div style="font-size:11px;font-weight:700;color:#1CABE2;margin-bottom:6px;">✨ OG3 AI Assistant</div>
-        <div style="font-size:13px;color:#222;line-height:1.6;">Hello! I am your OG3 coordination assistant. I can help you with:<br><br>
-        📝 <strong>Generate MOM</strong> — paste your meeting notes and I will format them<br>
-        📋 <strong>Draft Agenda</strong> — for OG3, JSC, OSC or any meeting<br>
-        🎯 <strong>Talking Points</strong> — for CR, Jesper, UNCT or government meetings<br>
-        📄 <strong>Summarise Documents</strong> — paste any RC Office note or circular<br>
-        ✉️ <strong>Draft Emails</strong> — formal UN correspondence<br>
-        💡 <strong>Any other task</strong> — just type what you need<br><br>
-        How can I help you today?</div>
-      </div>
-    </div>
-
-    <!-- Suggestion chips -->
-    <div id="ai-chips" style="padding:10px 16px;border-top:1px solid #EEF2F6;display:flex;flex-wrap:wrap;gap:8px;background:#FAFCFE;">
-      <button onclick="useChip(this)" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;font-weight:600;">📝 Generate MOM</button>
-      <button onclick="useChip(this)" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;font-weight:600;">📋 Draft OG3 Agenda</button>
-      <button onclick="useChip(this)" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;font-weight:600;">🎯 Talking Points for UNCT</button>
-      <button onclick="useChip(this)" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;font-weight:600;">📄 Summarise Document</button>
-      <button onclick="useChip(this)" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;font-weight:600;">✉️ Draft Email to RC Office</button>
-      <button onclick="useChip(this)" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;font-weight:600;">💡 Talking Points for JSC</button>
-    </div>
-
-    <!-- Input area -->
-    <div style="padding:14px 16px;border-top:1px solid #EEF2F6;background:#fff;display:flex;gap:10px;align-items:flex-end;">
-      <textarea id="ai-input" placeholder="Type your request here — e.g. Generate agenda for next OG3 meeting, or paste meeting notes for MOM..."
-        style="flex:1;border:1px solid #CBD5E0;border-radius:8px;padding:10px 14px;font-size:13px;resize:none;height:50px;font-family:Calibri,sans-serif;outline:none;line-height:1.5;"
-        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAI();}"
-        oninput="this.style.height='50px';this.style.height=Math.min(this.scrollHeight,120)+'px';"></textarea>
-      <button onclick="sendAI()" id="ai-send-btn"
-        style="background:#003A5D;color:#fff;border:none;padding:12px 20px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;white-space:nowrap;height:50px;">
-        Send ➤
+  <!-- Main launch button -->
+  <div style="text-align:center;margin-bottom:32px;">
+    <a href="${claudeURL}" target="_blank" style="text-decoration:none;">
+      <button style="background:linear-gradient(135deg,#003A5D,#1CABE2);color:#fff;border:none;padding:18px 48px;border-radius:12px;cursor:pointer;font-size:18px;font-weight:700;box-shadow:0 4px 16px rgba(0,58,93,.3);letter-spacing:.5px;">
+        ✨ Open OG3 AI Assistant
       </button>
-    </div>
-
+    </a>
+    <div style="margin-top:10px;font-size:12px;color:#9EA8B3;">Opens Claude AI in a new tab · OG3 context pre-loaded · No login needed if already signed in</div>
   </div>
-  <p style="font-size:11px;color:#9EA8B3;margin-top:8px;text-align:center;">Powered by Claude AI · Responses are AI-generated — please review before use</p>
+
+  <!-- Quick prompts section -->
+  <div style="margin-bottom:20px;">
+    <div style="font-weight:700;color:#003A5D;font-size:14px;margin-bottom:12px;">Quick Prompts — Copy and paste into Claude:</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+      <div style="background:#fff;border:1px solid #CBD5E0;border-radius:8px;padding:14px;">
+        <div style="font-weight:700;color:#003A5D;font-size:13px;margin-bottom:6px;">📝 Generate Meeting Minutes</div>
+        <div style="font-size:12px;color:#546E7A;margin-bottom:10px;">Paste your raw notes and ask Claude to format them as a MOM</div>
+        <button onclick="copyQ('Generate formal OG3 meeting minutes from these notes: [PASTE YOUR NOTES HERE]')" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;width:100%;">📋 Copy Prompt</button>
+      </div>
+
+      <div style="background:#fff;border:1px solid #CBD5E0;border-radius:8px;padding:14px;">
+        <div style="font-weight:700;color:#003A5D;font-size:13px;margin-bottom:6px;">📋 Draft OG3 Agenda</div>
+        <div style="font-size:12px;color:#546E7A;margin-bottom:10px;">Get a ready agenda for the next OG3 monthly meeting</div>
+        <button onclick="copyQ('Draft a formal agenda for the next OG3 Quality Education monthly coordination meeting. Include time allocations. Key topics: review of action points, agency updates, UNSDCF 2028-32 planning update.')" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;width:100%;">📋 Copy Prompt</button>
+      </div>
+
+      <div style="background:#fff;border:1px solid #CBD5E0;border-radius:8px;padding:14px;">
+        <div style="font-weight:700;color:#003A5D;font-size:13px;margin-bottom:6px;">🎯 Talking Points for CR</div>
+        <div style="font-size:12px;color:#546E7A;margin-bottom:10px;">Crisp talking points for Cynthia or Jesper for any meeting</div>
+        <button onclick="copyQ('Generate 6 crisp talking points for UNICEF India Country Representative for [MEETING TYPE e.g. JSC / UNCT / OSC with MoE]. Topic: [DESCRIBE TOPIC]')" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;width:100%;">📋 Copy Prompt</button>
+      </div>
+
+      <div style="background:#fff;border:1px solid #CBD5E0;border-radius:8px;padding:14px;">
+        <div style="font-weight:700;color:#003A5D;font-size:13px;margin-bottom:6px;">📄 Summarise Document</div>
+        <div style="font-size:12px;color:#546E7A;margin-bottom:10px;">Summarise any RC Office note or government circular</div>
+        <button onclick="copyQ('Summarise this document in 4 sections: (1) Purpose, (2) Key Points, (3) Actions Required, (4) Implications for UNICEF India OG3.\n\n[PASTE DOCUMENT HERE]')" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;width:100%;">📋 Copy Prompt</button>
+      </div>
+
+      <div style="background:#fff;border:1px solid #CBD5E0;border-radius:8px;padding:14px;">
+        <div style="font-weight:700;color:#003A5D;font-size:13px;margin-bottom:6px;">✉️ Draft Email to RC Office</div>
+        <div style="font-size:12px;color:#546E7A;margin-bottom:10px;">Formal UN correspondence drafted instantly</div>
+        <button onclick="copyQ('Draft a formal email from UNICEF India OG3 Convenor to the RC Office regarding: [DESCRIBE PURPOSE]')" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;width:100%;">📋 Copy Prompt</button>
+      </div>
+
+      <div style="background:#fff;border:1px solid #CBD5E0;border-radius:8px;padding:14px;">
+        <div style="font-weight:700;color:#003A5D;font-size:13px;margin-bottom:6px;">💡 JSC Preparation</div>
+        <div style="font-size:12px;color:#546E7A;margin-bottom:10px;">Briefing note or prep material for upcoming JSC</div>
+        <button onclick="copyQ('Prepare a briefing note for UNICEF India leadership for the upcoming Joint Steering Committee (JSC) meeting. Cover: OG3 highlights, key decisions needed, UNICEF India position on UNSDCF 2028-32.')" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;width:100%;">📋 Copy Prompt</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="copy-toast" style="display:none;position:fixed;bottom:24px;right:24px;background:#00833D;color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:9999;">✅ Prompt copied — paste in Claude!</div>
   `;
 }
 
-function useChip(btn) {
-  document.getElementById('ai-input').value = btn.innerText.replace(/^[^a-zA-Z]+/, '').trim();
-  document.getElementById('ai-input').focus();
-}
-
-async function sendAI() {
-  var input = document.getElementById('ai-input');
-  var msg = input.value.trim();
-  if (!msg) return;
-
-  var history = document.getElementById('ai-history');
-  var btn = document.getElementById('ai-send-btn');
-
-  // Add user message
-  history.innerHTML += '<div style="background:#003A5D;color:#fff;border-radius:10px;padding:12px 16px;max-width:80%;align-self:flex-end;font-size:13px;line-height:1.6;">' + msg.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>';
-  input.value = '';
-  input.style.height = '50px';
-  history.scrollTop = history.scrollHeight;
-
-  // Loading indicator
-  var loadId = 'load-' + Date.now();
-  history.innerHTML += '<div id="' + loadId + '" style="background:#E8F4FA;border-radius:10px;padding:12px 16px;max-width:80%;align-self:flex-start;font-size:13px;color:#546E7A;">✨ Generating response...</div>';
-  history.scrollTop = history.scrollHeight;
-  btn.disabled = true;
-  btn.innerText = '...';
-
-  var system = 'You are an expert UN coordination assistant for the OG3 Quality Education Outcome Group under the UNSDCF 2023-27 framework in India. UNICEF India is the Lead Convenor. Member agencies include UNESCO, UNFPA and UNHCR. You help with: meeting minutes (MOM), agendas, talking points for senior UN leadership, document summaries, formal UN correspondence and any coordination task. Use professional UN language. Be concise, structured and practical. For MOM: include Attendees, Agenda, Key Discussions, Decisions, Action Points with owner and deadline. For agendas: include time allocations. For talking points: 5-7 crisp bullets. For summaries: Purpose, Key Points, Actions Required, Implications for UNICEF India.';
-
-  try {
-    var res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1500,
-        system: system,
-        messages: [{role: 'user', content: msg}]
-      })
-    });
-    var data = await res.json();
-    var reply = data.content && data.content[0] ? data.content[0].text : 'Sorry, no response received.';
-    var formatted = reply
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g,'<em>$1</em>')
-      .replace(/\n\n/g,'</p><p style="margin:8px 0">')
-      .replace(/\n/g,'<br>')
-      .replace(/^(#{1,3} )(.+)/gm,'<strong style="color:#003A5D">$2</strong>');
-
-    document.getElementById(loadId).innerHTML =
-      '<div style="font-size:11px;font-weight:700;color:#1CABE2;margin-bottom:6px;">✨ OG3 AI Assistant</div>' +
-      '<div style="font-size:13px;line-height:1.6;color:#222"><p style="margin:0">' + formatted + '</p></div>' +
-      '<button onclick="copyReply(this)" style="margin-top:10px;background:#EEF6FA;border:1px solid #CBD5E0;color:#546E7A;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:11px;">📋 Copy</button>';
-  } catch(e) {
-    document.getElementById(loadId).innerHTML = '<div style="color:#C0392B;font-size:13px;">⚠️ Error: ' + e.message + '. Please try again.</div>';
-  }
-
-  btn.disabled = false;
-  btn.innerText = 'Send ➤';
-  history.scrollTop = history.scrollHeight;
-}
-
-function copyReply(btn) {
-  var text = btn.previousElementSibling.innerText;
-  navigator.clipboard.writeText(text).then(function(){
-    btn.innerText = '✅ Copied!';
-    setTimeout(function(){ btn.innerText = '📋 Copy'; }, 2000);
+function copyQ(text) {
+  navigator.clipboard.writeText(text).then(function() {
+    var toast = document.getElementById('copy-toast');
+    toast.style.display = 'block';
+    setTimeout(function(){ toast.style.display = 'none'; }, 3000);
   });
 }
 
