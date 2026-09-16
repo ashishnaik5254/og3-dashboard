@@ -102,6 +102,7 @@ tr:hover td{background:#FAFBFC}
   <div class="tab" data-tab="jsc">JSC</div>
   <div class="tab" data-tab="documents">Documents</div>
   <div class="tab" data-tab="unsdcf">UNSDCF 2028-32</div>
+  <div class="tab" data-tab="ai" style="background:linear-gradient(135deg,#1CABE2,#003A5D);color:#fff;font-weight:700;border-radius:6px;">✨ AI Assistant</div>
 </div>
 
 <div class="content" id="content">
@@ -272,7 +273,7 @@ function progBar(p, s) {
 }
 
 function render() {
-  var fns = {overview:overview, about:about, meetings:meetings, reporting:reporting, jwp:jwp, osc:osc, jsc:jsc, documents:documents, unsdcf:unsdcf};
+  var fns = {overview:overview, about:about, meetings:meetings, reporting:reporting, jwp:jwp, osc:osc, jsc:jsc, documents:documents, unsdcf:unsdcf, ai:aiAssistant};
   document.getElementById('content').innerHTML = fns[TAB]();
 }
 
@@ -725,6 +726,158 @@ html += '</div>';
 }
 
 loadAll();
+
+function aiAssistant() {
+  return `
+  <div class="sec-title">✨ AI Assistant — OG3 Coordination Tools</div>
+  <p style="color:#546E7A;font-size:13px;margin-bottom:20px;">Powered by Claude AI. Use these tools to generate coordination documents instantly.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+    <!-- Tool 1: MOM Generator -->
+    <div style="background:#fff;border-radius:10px;padding:20px;border:1px solid #CBD5E0;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span style="font-size:24px;">📝</span>
+        <div>
+          <div style="font-weight:700;color:#003A5D;font-size:15px;">Meeting Minutes Generator</div>
+          <div style="font-size:12px;color:#546E7A;">Paste raw notes → get formatted MOM</div>
+        </div>
+      </div>
+      <textarea id="mom-input" placeholder="Paste your raw meeting notes here — key points, decisions, attendees, action items..." 
+        style="width:100%;height:120px;border:1px solid #CBD5E0;border-radius:6px;padding:10px;font-size:13px;resize:vertical;box-sizing:border-box;font-family:Calibri,sans-serif;"></textarea>
+      <button onclick="callAI('mom')" style="margin-top:10px;background:#003A5D;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;width:100%;">
+        ✨ Generate Minutes
+      </button>
+      <div id="mom-output" style="margin-top:12px;display:none;"></div>
+    </div>
+
+    <!-- Tool 2: Agenda Builder -->
+    <div style="background:#fff;border-radius:10px;padding:20px;border:1px solid #CBD5E0;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span style="font-size:24px;">📋</span>
+        <div>
+          <div style="font-weight:700;color:#003A5D;font-size:15px;">Agenda Builder</div>
+          <div style="font-size:12px;color:#546E7A;">Enter context → get draft agenda</div>
+        </div>
+      </div>
+      <select id="agenda-type" style="width:100%;border:1px solid #CBD5E0;border-radius:6px;padding:8px;font-size:13px;margin-bottom:8px;box-sizing:border-box;">
+        <option value="OG3">OG3 Monthly Meeting</option>
+        <option value="JSC">JSC — Joint Steering Committee</option>
+        <option value="OSC">OSC — Outcome Standing Committee</option>
+        <option value="UNCT">UNCT Meeting</option>
+      </select>
+      <textarea id="agenda-input" placeholder="Add any specific topics, pending action points or priorities to include..." 
+        style="width:100%;height:80px;border:1px solid #CBD5E0;border-radius:6px;padding:10px;font-size:13px;resize:vertical;box-sizing:border-box;font-family:Calibri,sans-serif;"></textarea>
+      <button onclick="callAI('agenda')" style="margin-top:10px;background:#1CABE2;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;width:100%;">
+        ✨ Build Agenda
+      </button>
+      <div id="agenda-output" style="margin-top:12px;display:none;"></div>
+    </div>
+
+    <!-- Tool 3: Talking Points Generator -->
+    <div style="background:#fff;border-radius:10px;padding:20px;border:1px solid #CBD5E0;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span style="font-size:24px;">🎯</span>
+        <div>
+          <div style="font-weight:700;color:#003A5D;font-size:15px;">Talking Points Generator</div>
+          <div style="font-size:12px;color:#546E7A;">For CR, Jesper or senior leadership</div>
+        </div>
+      </div>
+      <select id="tp-forum" style="width:100%;border:1px solid #CBD5E0;border-radius:6px;padding:8px;font-size:13px;margin-bottom:8px;box-sizing:border-box;">
+        <option value="UNCT">UNCT Meeting</option>
+        <option value="JSC">JSC</option>
+        <option value="OSC with MoE">OSC with Ministry of Education</option>
+        <option value="OG3">OG3 Coordination Meeting</option>
+        <option value="NITI Aayog">NITI Aayog Bilateral</option>
+      </select>
+      <textarea id="tp-input" placeholder="Describe the topic or issue to develop talking points on..." 
+        style="width:100%;height:80px;border:1px solid #CBD5E0;border-radius:6px;padding:10px;font-size:13px;resize:vertical;box-sizing:border-box;font-family:Calibri,sans-serif;"></textarea>
+      <button onclick="callAI('talking')" style="margin-top:10px;background:#00833D;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;width:100%;">
+        ✨ Generate Talking Points
+      </button>
+      <div id="talking-output" style="margin-top:12px;display:none;"></div>
+    </div>
+
+    <!-- Tool 4: Document Summariser -->
+    <div style="background:#fff;border-radius:10px;padding:20px;border:1px solid #CBD5E0;box-shadow:0 2px 8px rgba(0,0,0,.06);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span style="font-size:24px;">📄</span>
+        <div>
+          <div style="font-weight:700;color:#003A5D;font-size:15px;">Document Summariser</div>
+          <div style="font-size:12px;color:#546E7A;">Paste any RC Office note or document</div>
+        </div>
+      </div>
+      <textarea id="summary-input" placeholder="Paste any long document, RC Office note, government circular or meeting report here..." 
+        style="width:100%;height:120px;border:1px solid #CBD5E0;border-radius:6px;padding:10px;font-size:13px;resize:vertical;box-sizing:border-box;font-family:Calibri,sans-serif;"></textarea>
+      <button onclick="callAI('summary')" style="margin-top:10px;background:#B8860B;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;width:100%;">
+        ✨ Summarise Document
+      </button>
+      <div id="summary-output" style="margin-top:12px;display:none;"></div>
+    </div>
+
+  </div>
+  `;
+}
+
+async function callAI(tool) {
+  var prompts = {
+    mom: {
+      input: document.getElementById('mom-input').value,
+      outputId: 'mom-output',
+      system: 'You are a UN coordination expert. Generate a formal, professional Minutes of Meeting (MOM) document for an OG3 Quality Education inter-agency coordination meeting. Format with: Date and Attendees section, Agenda Items, Key Discussions, Decisions, Action Points (with owner and deadline), and Next Meeting. Use clear, formal UN language. Be concise and structured.',
+      userPrefix: 'Generate formatted meeting minutes from these raw notes:\n\n'
+    },
+    agenda: {
+      input: (document.getElementById('agenda-type').value + ' — ' + document.getElementById('agenda-input').value),
+      outputId: 'agenda-output',
+      system: 'You are a UN coordination expert. Generate a professional meeting agenda for a UN coordination meeting. Include: Welcome and Introductions, Review of Previous Action Points, main agenda items, Any Other Business, Next Steps and Date of Next Meeting. Use formal UN language. Each item should have a suggested time allocation.',
+      userPrefix: 'Generate a professional meeting agenda for: '
+    },
+    talking: {
+      input: (document.getElementById('tp-forum').value + ' — ' + document.getElementById('tp-input').value),
+      outputId: 'talking-output',
+      system: 'You are a senior UN coordination advisor preparing talking points for UNICEF India leadership. Generate 5-7 crisp, high-level talking points for senior leadership. Each point should be one to two sentences, authoritative and evidence-based. Format as clear bullet points. Focus on UNICEF India\'s strategic positioning, key achievements and forward-looking recommendations.',
+      userPrefix: 'Generate talking points for: '
+    },
+    summary: {
+      input: document.getElementById('summary-input').value,
+      outputId: 'summary-output',
+      system: 'You are a UN coordination expert. Summarise the following document in a structured format: (1) Purpose — one sentence, (2) Key Points — 4-6 bullet points, (3) Decisions or Actions Required — bullet points, (4) Implications for UNICEF India — 2-3 sentences. Be concise and use plain, clear language.',
+      userPrefix: 'Summarise this document:\n\n'
+    }
+  };
+
+  var cfg = prompts[tool];
+  if (!cfg.input.trim()) {
+    alert('Please enter some content first.');
+    return;
+  }
+
+  var outputEl = document.getElementById(cfg.outputId);
+  outputEl.style.display = 'block';
+  outputEl.innerHTML = '<div style="background:#EEF6FA;border-radius:6px;padding:12px;color:#003A5D;font-size:13px;">✨ AI is generating... please wait a few seconds.</div>';
+
+  try {
+    var response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1000,
+        system: cfg.system,
+        messages: [{role: "user", content: cfg.userPrefix + cfg.input}]
+      })
+    });
+    var data = await response.json();
+    var result = data.content && data.content[0] ? data.content[0].text : 'No response received.';
+    var formatted = result.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/^\* /gm, '• ').replace(/^- /gm, '• ');
+    outputEl.innerHTML = 
+      '<div style="background:#F8FFFE;border:1px solid #CBD5E0;border-radius:6px;padding:14px;font-size:13px;line-height:1.6;color:#222;">' + formatted + '</div>' +
+      '<button onclick="navigator.clipboard.writeText(document.getElementById(\''+cfg.outputId+'\').querySelector(\'div\').innerText)" style="margin-top:8px;background:#546E7A;color:#fff;border:none;padding:6px 14px;border-radius:4px;cursor:pointer;font-size:12px;">📋 Copy</button>';
+  } catch(e) {
+    outputEl.innerHTML = '<div style="background:#FDE8E7;border-radius:6px;padding:12px;color:#C0392B;font-size:13px;">Error: ' + e.message + '</div>';
+  }
+}
 </script>
 </body>
 </html>
