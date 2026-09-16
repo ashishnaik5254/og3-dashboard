@@ -728,78 +728,18 @@ html += '</div>';
 loadAll();
 
 function aiAssistant() {
-  var claudeContext = encodeURIComponent("You are an expert UN coordination assistant for the OG3 Quality Education Outcome Group under the UNSDCF 2023-27 framework in India. UNICEF India is the Lead Convenor (focal point: Saadhna Pandey). Member agencies: UNESCO (Joyce Poan), UNFPA (Manish Kumar), UNHCR (Ragini Zutshi). The group coordinates quality education programming across all agencies. You help with: meeting minutes (MOM), agendas, talking points for CR Cynthia McCaffrey or DRP Jesper Moller, document summaries, formal UN correspondence and any coordination task. Use professional UN language. Be concise, structured and practical. How can I help you today?");
-
-  var claudeURL = "https://claude.ai/new?q=" + claudeContext;
-
   return `
-  <div class="sec-title">✨ OG3 AI Assistant</div>
-  <p style="color:#546E7A;font-size:13px;margin-bottom:20px;">Click the button below to open Claude AI with OG3 context pre-loaded. Type your request and get instant results — meeting minutes, agendas, talking points, document summaries and more.</p>
-
-  <!-- Main launch button -->
-  <div style="text-align:center;margin-bottom:32px;">
-    <a href="${claudeURL}" target="_blank" style="text-decoration:none;">
-      <button style="background:linear-gradient(135deg,#003A5D,#1CABE2);color:#fff;border:none;padding:18px 48px;border-radius:12px;cursor:pointer;font-size:18px;font-weight:700;box-shadow:0 4px 16px rgba(0,58,93,.3);letter-spacing:.5px;">
-        ✨ Open OG3 AI Assistant
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;text-align:center;">
+    <div style="font-size:48px;margin-bottom:16px;">✨</div>
+    <div style="font-size:22px;font-weight:700;color:#003A5D;margin-bottom:8px;">OG3 AI Assistant</div>
+    <div style="font-size:14px;color:#546E7A;margin-bottom:32px;max-width:400px;">Click below to open a Claude AI chat. Ask anything — meeting minutes, agendas, talking points, document summaries and more.</div>
+    <a href="https://claude.ai/new" target="_blank" style="text-decoration:none;">
+      <button style="background:#003A5D;color:#fff;border:none;padding:16px 48px;border-radius:10px;cursor:pointer;font-size:16px;font-weight:700;box-shadow:0 4px 16px rgba(0,58,93,.25);">
+        ✨ Open AI Assistant
       </button>
     </a>
-    <div style="margin-top:10px;font-size:12px;color:#9EA8B3;">Opens Claude AI in a new tab · OG3 context pre-loaded · No login needed if already signed in</div>
   </div>
-
-  <!-- Quick prompts section -->
-  <div style="margin-bottom:20px;">
-    <div style="font-weight:700;color:#003A5D;font-size:14px;margin-bottom:12px;">Quick Prompts — Copy and paste into Claude:</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-
-      <div style="background:#fff;border:1px solid #CBD5E0;border-radius:8px;padding:14px;">
-        <div style="font-weight:700;color:#003A5D;font-size:13px;margin-bottom:6px;">📝 Generate Meeting Minutes</div>
-        <div style="font-size:12px;color:#546E7A;margin-bottom:10px;">Paste your raw notes and ask Claude to format them as a MOM</div>
-        <button onclick="copyQ('Generate formal OG3 meeting minutes from these notes: [PASTE YOUR NOTES HERE]')" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;width:100%;">📋 Copy Prompt</button>
-      </div>
-
-      <div style="background:#fff;border:1px solid #CBD5E0;border-radius:8px;padding:14px;">
-        <div style="font-weight:700;color:#003A5D;font-size:13px;margin-bottom:6px;">📋 Draft OG3 Agenda</div>
-        <div style="font-size:12px;color:#546E7A;margin-bottom:10px;">Get a ready agenda for the next OG3 monthly meeting</div>
-        <button onclick="copyQ('Draft a formal agenda for the next OG3 Quality Education monthly coordination meeting. Include time allocations. Key topics: review of action points, agency updates, UNSDCF 2028-32 planning update.')" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;width:100%;">📋 Copy Prompt</button>
-      </div>
-
-      <div style="background:#fff;border:1px solid #CBD5E0;border-radius:8px;padding:14px;">
-        <div style="font-weight:700;color:#003A5D;font-size:13px;margin-bottom:6px;">🎯 Talking Points for CR</div>
-        <div style="font-size:12px;color:#546E7A;margin-bottom:10px;">Crisp talking points for Cynthia or Jesper for any meeting</div>
-        <button onclick="copyQ('Generate 6 crisp talking points for UNICEF India Country Representative for [MEETING TYPE e.g. JSC / UNCT / OSC with MoE]. Topic: [DESCRIBE TOPIC]')" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;width:100%;">📋 Copy Prompt</button>
-      </div>
-
-      <div style="background:#fff;border:1px solid #CBD5E0;border-radius:8px;padding:14px;">
-        <div style="font-weight:700;color:#003A5D;font-size:13px;margin-bottom:6px;">📄 Summarise Document</div>
-        <div style="font-size:12px;color:#546E7A;margin-bottom:10px;">Summarise any RC Office note or government circular</div>
-        <button onclick="copyQ('Summarise this document in 4 sections: (1) Purpose, (2) Key Points, (3) Actions Required, (4) Implications for UNICEF India OG3.\n\n[PASTE DOCUMENT HERE]')" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;width:100%;">📋 Copy Prompt</button>
-      </div>
-
-      <div style="background:#fff;border:1px solid #CBD5E0;border-radius:8px;padding:14px;">
-        <div style="font-weight:700;color:#003A5D;font-size:13px;margin-bottom:6px;">✉️ Draft Email to RC Office</div>
-        <div style="font-size:12px;color:#546E7A;margin-bottom:10px;">Formal UN correspondence drafted instantly</div>
-        <button onclick="copyQ('Draft a formal email from UNICEF India OG3 Convenor to the RC Office regarding: [DESCRIBE PURPOSE]')" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;width:100%;">📋 Copy Prompt</button>
-      </div>
-
-      <div style="background:#fff;border:1px solid #CBD5E0;border-radius:8px;padding:14px;">
-        <div style="font-weight:700;color:#003A5D;font-size:13px;margin-bottom:6px;">💡 JSC Preparation</div>
-        <div style="font-size:12px;color:#546E7A;margin-bottom:10px;">Briefing note or prep material for upcoming JSC</div>
-        <button onclick="copyQ('Prepare a briefing note for UNICEF India leadership for the upcoming Joint Steering Committee (JSC) meeting. Cover: OG3 highlights, key decisions needed, UNICEF India position on UNSDCF 2028-32.')" style="background:#EEF6FA;border:1px solid #1CABE2;color:#003A5D;padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;width:100%;">📋 Copy Prompt</button>
-      </div>
-
-    </div>
-  </div>
-
-  <div id="copy-toast" style="display:none;position:fixed;bottom:24px;right:24px;background:#00833D;color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:9999;">✅ Prompt copied — paste in Claude!</div>
   `;
-}
-
-function copyQ(text) {
-  navigator.clipboard.writeText(text).then(function() {
-    var toast = document.getElementById('copy-toast');
-    toast.style.display = 'block';
-    setTimeout(function(){ toast.style.display = 'none'; }, 3000);
-  });
 }
 
 </script>
