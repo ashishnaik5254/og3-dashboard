@@ -728,7 +728,7 @@ html += '</div>';
 loadAll();
 
 function aiAssistant() {
-  var prompt = encodeURIComponent("You are an expert UN coordination assistant for the OG3 Quality Education Outcome Group under the UNSDCF 2023-27 framework in India. UNICEF India is Lead Convenor. Member agencies: UNESCO, UNFPA, UNHCR. Help with meeting minutes, agendas, talking points, document summaries, emails and any coordination task. Use professional UN language. Start by saying: Welcome to OG3 Quality Education Coordination Assistant! How can I help you today?");
+  var prompt = "Welcome%20to%20the%20OG3%20AI%20Assistant%21%20This%20space%20is%20dedicated%20to%20supporting%20the%20Quality%20Education%20Outcome%20Group%20under%20the%20UNSDCF%202023-27%20framework%20in%20India%2C%20where%20UNICEF%2C%20UNESCO%2C%20UNFPA%20and%20UNHCR%20work%20together%20to%20advance%20inclusive%20and%20quality%20education%20for%20every%20child%20and%20young%20person.%20I%20am%20here%20to%20help%20you%20with%20meeting%20agendas%2C%20minutes%2C%20talking%20points%2C%20document%20summaries%2C%20emails%20and%20any%20coordination%20task.%20How%20can%20I%20help%20you%20today%3F";
   var claudeURL = "https://claude.ai/new?q=" + prompt;
 
   return `
